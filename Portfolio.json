@@ -1,0 +1,1104 @@
+{
+  "name": "Portfolio",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://leetcode-stats-api.herokuapp.com/{{ $json.body.codingProfiles.leetcode }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        -176
+      ],
+      "id": "e67177f3-593f-472b-ac01-be68252b62c8",
+      "name": "LeetCode"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.github.com/users/{{ $json.body.professionalProfiles.github }}/repos?per_page=100",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        176
+      ],
+      "id": "18c0374d-ac5c-41cc-b49b-953b46768859",
+      "name": "Github"
+    },
+    {
+      "parameters": {
+        "url": "=https://codeforces.com/api/user.info?handles={{ $json.body.codingProfiles.codeforces }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        352
+      ],
+      "id": "b591e091-c142-4f26-b79f-e7841110e10b",
+      "name": "CodeForces",
+      "retryOnFail": true,
+      "maxTries": 5
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "portfolio",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        304,
+        0
+      ],
+      "id": "b1977331-e6dc-4d97-96c9-fc5fc0279fb9",
+      "name": "Webhook",
+      "webhookId": "adc1c53c-99c6-47f2-94b9-de9db7fe87af"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw",
+          "mode": "list",
+          "cachedResultName": "Portfolio",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "LeetCode",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Handle": "={{ $('Webhook').item.json.body.codingProfiles.leetcode }}",
+            "Total Solved": "={{ $json.totalSolved }}",
+            "Total Questions": "={{ $json.totalQuestions }}",
+            "Easy": "={{ $json.easySolved }}",
+            "Total Easy": "={{ $json.totalEasy }}",
+            "Total Medium": "={{ $json.totalMedium }}",
+            "Medium": "={{ $json.mediumSolved }}",
+            "Hard": "={{ $json.hardSolved }}",
+            "Total Hard": "={{ $json.totalHard }}",
+            "AcceptanceRate": "={{ $json.acceptanceRate }}",
+            "Ranking": "={{ $json.ranking }}"
+          },
+          "matchingColumns": [
+            "Handle"
+          ],
+          "schema": [
+            {
+              "id": "Handle",
+              "displayName": "Handle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Total Solved",
+              "displayName": "Total Solved",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total Questions",
+              "displayName": "Total Questions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Easy",
+              "displayName": "Easy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total Easy",
+              "displayName": "Total Easy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Medium",
+              "displayName": "Medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total Medium",
+              "displayName": "Total Medium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Hard",
+              "displayName": "Hard",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total Hard",
+              "displayName": "Total Hard",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AcceptanceRate",
+              "displayName": "AcceptanceRate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Ranking",
+              "displayName": "Ranking",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        832,
+        -176
+      ],
+      "id": "a6f06e04-e25a-41b7-a7ef-2beb0dae8c6a",
+      "name": "Leetcode sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5WAFX09FqWeRady7",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw",
+          "mode": "list",
+          "cachedResultName": "Portfolio",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1326414134,
+          "mode": "list",
+          "cachedResultName": "GitHub",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit#gid=1326414134"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.full_name }}",
+            "url": "={{ $json.html_url }}",
+            "Description": "={{ $json.description }}",
+            "Created at": "={{ $json.created_at }}",
+            "Updated at": "={{ $json.updated_at }}",
+            "Technology": "={{ $json.language }}",
+            "Handle": "={{ $json.owner.login }}"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "Handle",
+              "displayName": "Handle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created at",
+              "displayName": "Created at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Updated at",
+              "displayName": "Updated at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Technology",
+              "displayName": "Technology",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        832,
+        176
+      ],
+      "id": "e5d7349d-a65e-4250-a7cf-0160fc1c5a1c",
+      "name": "Git sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5WAFX09FqWeRady7",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw",
+          "mode": "list",
+          "cachedResultName": "Portfolio",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1595179133,
+          "mode": "list",
+          "cachedResultName": "Codeforce",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit#gid=1595179133"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "handle": "={{ $json.result[0].handle }}",
+            "rating": "={{ $json.result[0].rating }}",
+            "maxRating": "={{ $json.result[0].maxRating }}",
+            "lastOnlineTimeSeconds": "={{ $json.result[0].lastOnlineTimeSeconds }}",
+            "registrationTimeSeconds": "={{ $json.result[0].registrationTimeSeconds }}"
+          },
+          "matchingColumns": [
+            "handle"
+          ],
+          "schema": [
+            {
+              "id": "handle",
+              "displayName": "handle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rating",
+              "displayName": "rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "maxRating",
+              "displayName": "maxRating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lastOnlineTimeSeconds",
+              "displayName": "lastOnlineTimeSeconds",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "registrationTimeSeconds",
+              "displayName": "registrationTimeSeconds",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        832,
+        352
+      ],
+      "id": "2679e238-6125-4491-b55f-b46c2c94fbc4",
+      "name": "CF Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5WAFX09FqWeRady7",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ebb65734-cc5f-4f09-8218-105ed8fd8ee6",
+              "name": "ID",
+              "value": "={{ ($json.body.certificates.googleDriveLink.match(/\\/folders\\/([a-zA-Z0-9_-]+)/) || [])[1].trim() }}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        -352
+      ],
+      "id": "a45baaa4-214a-4be3-8933-d3e9b45631a9",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "searchMethod": "query",
+        "queryString": "='{{ $json.ID.trim() }}' in parents",
+        "returnAll": true,
+        "filter": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        832,
+        -352
+      ],
+      "id": "ad1f5e9d-c44c-4e7f-81e5-5b7400996786",
+      "name": "List Certificates",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "TTJpvAGoWsp5WBub",
+          "name": "Google Drive account 6"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1040,
+        -352
+      ],
+      "id": "bd2f85bd-bf04-4a23-b0c6-2a50c1b88c17",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "TTJpvAGoWsp5WBub",
+          "name": "Google Drive account 6"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ocr.space/parse/image",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "K85910341888957"
+            },
+            {
+              "name": "language",
+              "value": "eng"
+            },
+            {
+              "name": "scale",
+              "value": "true"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "data",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1248,
+        -352
+      ],
+      "id": "dc363f9f-a26a-4b36-b704-d096eab6ceb3",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const text = item.json.ParsedResults[0].ParsedText.trim();\n\n  let awardedBy = null;\n  let event = null;\n\n  // Extract institute / organization based on common words\n  const orgPatterns = [\n    /(Google Developer Groups on Campus|GDG|GDSC|Google Developer Groups)/i,\n    /(ISTE VNRVJIET|Indian Society for Technical Education|ISTE)/i,\n    /(CSI VNRVJIET|Computer Society of India|CSI)/i,\n    /(VNRVJIET|VIGNANA JYOTHI|VALLURUPALLI NAGESWARA RAO VIGNANA JYOTHI)/i,\n    /(ICACECS|International Conference|Workshop)/i\n  ];\n\n  for (const pattern of orgPatterns) {\n    const match = text.match(pattern);\n    if (match) {\n      awardedBy = match[0];\n      break;\n    }\n  }\n\n  // Extract event/workshop name (commonly after words like: during, in, for, at)\n  const eventPatterns = [\n    /participation in (.*?)(held|conducted|organized)/i,\n    /for (?:their|his\\/her|her|his) (.*?)(\\n|\\.|,)/i,\n    /in the ['\"]?(.*)['\"]? workshop/i,\n    /during (.*?)( on |\\.)/i,\n    /in (.*?)( workshop| event)/i\n  ];\n\n  for (const pattern of eventPatterns) {\n    const match = text.match(pattern);\n    if (match && match[1]) {\n      event = match[1].replace(/[\"']/g, '').trim();\n      break;\n    }\n  }\n\n  results.push({\n    json: {\n      awardedBy: awardedBy || \"Not Detected\",\n      for: event || \"Not Clearly Specified\"\n    }\n  });\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1456,
+        -352
+      ],
+      "id": "cbee9548-7198-4cb3-b30e-b96da4af8cc7",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "https://api.apify.com/v2/acts/anchor~linkedin-profile-enrichment/run-sync-get-dataset-items?token=apify_api_k1DuAQ4rfkFxXP5RmpBIGZ8H0GhqRP0yqx0K",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"startUrls\": [\n    {\n      \"url\": \"{{ $json.body.professionalProfiles.linkedin }}\",\n      \"id\": \"1\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        -16
+      ],
+      "id": "5e799767-cbfb-4a9c-a67f-8ae842eae378",
+      "name": "Linkedin"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw",
+          "mode": "list",
+          "cachedResultName": "Portfolio",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1242979384,
+          "mode": "list",
+          "cachedResultName": "Certificates",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit#gid=1242979384"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('List Certificates').item.json.id }}",
+            "awardedBy": "={{ $json.awardedBy }}",
+            "for": "={{ $json.for }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "awardedBy",
+              "displayName": "awardedBy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "for",
+              "displayName": "for",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1664,
+        -352
+      ],
+      "id": "dfd4b31a-d817-4fd3-8fda-7e0ac89d4b97",
+      "name": "Certificate sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5WAFX09FqWeRady7",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw",
+          "mode": "list",
+          "cachedResultName": "Portfolio",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 624966450,
+          "mode": "list",
+          "cachedResultName": "Linkedin",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit#gid=624966450"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "full name": "={{ $json.full_name }}",
+            "skills": "={{ $json.skills }}",
+            "experience": "={{ $json.experiences }}",
+            "education": "={{ $json.education }}"
+          },
+          "matchingColumns": [
+            "full name"
+          ],
+          "schema": [
+            {
+              "id": "full name",
+              "displayName": "full name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "skills",
+              "displayName": "skills",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "experience",
+              "displayName": "experience",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "education",
+              "displayName": "education",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        832,
+        -16
+      ],
+      "id": "31778e2f-6ebb-48e7-ac99-0dc5e1eaf7c4",
+      "name": "Linkedin Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5WAFX09FqWeRady7",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: Array of certificates from Sheet\n// Output: section-wise formatted JSON\nconst certs = items.map(i => i.json);\n\nreturn [\n  {\n    json: {\n      section: \"certificates\",\n      certificates: certs\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1872,
+        -352
+      ],
+      "id": "28af5ed3-176b-4c7a-8702-d22fcf0315fc",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: Row from LeetCode sheet\n// Output: formatted stats\n\nconst data = items[0].json;\n\nreturn [\n  {\n    json: {\n      section: \"leetcode\",\n      stats: {\n        handle: data[\"Handle\"] || data.leetcode_handle,\n        total_solved: data[\"Total Solved\"] || data.total_solved,\n        easy: data[\"Easy\"] || data.easy_solved,\n        medium: data[\"Medium\"] || data.medium_solved,\n        hard: data[\"Hard\"] || data.hard_solved,\n        acceptance_rate: data.AcceptanceRate || data.acceptance_rate,\n        ranking: data.Ranking || data.ranking\n      }\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -176
+      ],
+      "id": "e8196d71-767c-4e44-ab7d-ea69410d98e9",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const p = items[0].json;\n\nreturn [\n  {\n    json: {\n      section: \"profile\",\n      name: p[\"full name\"] || p.name,\n      skills: p.skills || [],\n      experience: Array.isArray(p.experience)\n        ? p.experience.map(e =>\n            `${e.title || \"\"} at ${e.company || \"\"}${\n              e.starts_at ? ` (${e.starts_at})` : \"\"\n            }`\n          )\n        : [],\n      education: Array.isArray(p.education)\n        ? p.education.map(e =>\n            `${e.school || \"\"}${\n              e.starts_at || e.ends_at\n                ? ` (${e.starts_at || \"\"} - ${e.ends_at || \"\"})`\n                : \"\"\n            }`\n          )\n        : []\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -16
+      ],
+      "id": "e1a1b0a9-1fd9-4c3a-b6e5-4496a74a75e4",
+      "name": "Code in JavaScript4"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: Project list rows\n// Output: simplified project array\n\nconst projects = items.map(i => {\n  const p = i.json;\n  return {\n    name: p.name || p.Name,\n    url: p.url,\n    description: p.description || p.Description || \"\",\n    tech: p.tech || p.Technology || \"General\",\n    year: p.year || (p[\"Created at\"] ? p[\"Created at\"].slice(0, 4) : \"\")\n  };\n});\n\nreturn [\n  {\n    json: {\n      section: \"projects\",\n      projects\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        176
+      ],
+      "id": "2eace6eb-9ad2-4453-9481-e6122da3c718",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: Codeforces row\n// Output: clean competitive coding info\n\nconst c = items[0].json;\n\nreturn [\n  {\n    json: {\n      section: \"codeforces\",\n      handle: c.handle,\n      current_rating: c.current_rating || c.rating\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        352
+      ],
+      "id": "e64ce613-462c-4453-a267-741d14e14a88",
+      "name": "Code in JavaScript6"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        2384,
+        -32
+      ],
+      "id": "fbf12044-8430-4a52-9aec-2ca8b318516a",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2128,
+        -80
+      ],
+      "id": "742ea9d5-4a51-46ef-8deb-20fa4597372f",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "LeetCode": {
+      "main": [
+        [
+          {
+            "node": "Leetcode sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Github": {
+      "main": [
+        [
+          {
+            "node": "Git sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Github",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "CodeForces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "LeetCode",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Linkedin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CodeForces": {
+      "main": [
+        [
+          {
+            "node": "CF Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "List Certificates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Certificates": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Certificate sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leetcode sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Git sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CF Sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Linkedin": {
+      "main": [
+        [
+          {
+            "node": "Linkedin Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Certificate sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Linkedin Sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript4": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript6": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "41e73081-dab0-49de-8b3d-20b8f1c93b99",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d6f6fd01cc63e048ca5bd7a8e0ea57240f35f1b1736f1ef1d302347c1839d1af"
+  },
+  "id": "7enITT2oKNY6sWTD",
+  "tags": []
+}
