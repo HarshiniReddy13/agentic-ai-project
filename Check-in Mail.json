@@ -1,0 +1,375 @@
+{
+  "name": "Check-in Mail",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -288,
+        -192
+      ],
+      "id": "a8761411-361b-4197-83b8-15106c61b555",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw",
+          "mode": "list",
+          "cachedResultName": "Portfolio",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "LeetCode",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -32,
+        32
+      ],
+      "id": "5b7b2ca3-592b-4c96-90bf-4e2a3c71918c",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5WAFX09FqWeRady7",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are evaluating a user's LeetCode performance profile.\n\nTotal Questions: {{ $json[\"Total Questions\"] }}\nTotal Solved: {{ $json[\"Total Solved\"] }}\nEasy Solved: {{ $json.Easy }} / {{ $json[\"Total Easy\"] }}\nMedium Solved: {{ $json.Medium }} / {{ $json[\"Total Medium\"] }}\nHard Solved: {{ $json.Hard }} / {{ $json[\"Total Hard\"] }}\nAcceptance Rate: {{ $json.AcceptanceRate }}%\nRanking: {{ $json.Ranking }}\n\nWrite a very short constructive feedback summary (4-6 lines max).\n\nInclude:\n- Current skill level impression\n- Strengths: good Easy problem coverage + strong acceptance rate\n- Weakness: noticeable gap in medium and hard problem solving\n- A clear, actionable weekly practice plan (exact # of medium + hard problems to attempt)\n\nTone:\n- Positive, encouraging, supportive.\n- Do NOT be negative or critical.\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        32
+      ],
+      "id": "feb27181-71f4-4262-86af-1596cdf2a368",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        288,
+        224
+      ],
+      "id": "698d673e-3670-4b2b-a917-b1fc5fb0dc28",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "yuHWegMxZCGiKkZT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw",
+          "mode": "list",
+          "cachedResultName": "Portfolio",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1595179133,
+          "mode": "list",
+          "cachedResultName": "Codeforce",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit#gid=1595179133"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -48,
+        -448
+      ],
+      "id": "be00bb60-4765-498e-921d-123b659f0ede",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5WAFX09FqWeRady7",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are evaluating a user's Codeforces competitive programming profile.\n\nCurrent Rating: {{ $json.rating }}\nMax Rating: {{ $json.maxRating }}\nLast Online: {{ $json.lastOnlineTimeSeconds }}\nRegistered On: {{ $json.registrationTimeSeconds }}\n\nWrite a very short constructive feedback summary (4–6 lines max).\n\nInclude:\n- Current competitive skill level impression based on rating\n- Strength: consistency or rating stability (since current == max rating)\n- Weakness: needs more participation to push rating growth\n- A clear weekly improvement plan (exact # contests + # practice problems)\n\nTone:\n- Positive, motivating, supportive.\n- Do NOT criticize.\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        -448
+      ],
+      "id": "ef1d46d6-cb26-4b9d-a751-2bfdef38af9a",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        272,
+        -288
+      ],
+      "id": "7b76f7b6-2b8b-4cbd-91a8-cf058eb5c884",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "yuHWegMxZCGiKkZT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw",
+          "mode": "list",
+          "cachedResultName": "Portfolio",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2116063947,
+          "mode": "list",
+          "cachedResultName": "Details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1GTJWQAZTfqWMME56SbxDg6BmnAwolpgi7xOcaTXaTGw/edit#gid=2116063947"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        112,
+        -192
+      ],
+      "id": "51865206-b80f-462c-9530-c7a7a9e35432",
+      "name": "Get row(s) in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5WAFX09FqWeRady7",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Your merged input array\nconst cf = items[0].json.output;                 // Codeforces feedback\nconst name = items[1].json.Name;\nconst email = items[1].json[\"Email Id\"];\nconst lc = items[2].json.output;                 // LeetCode feedback\n\n// Styled HTML body\nconst emailBody = `\n<div style=\"font-family: 'Segoe UI', Arial, sans-serif; background-color: #f9fafb; padding: 20px; color: #333;\">\n  <div style=\"max-width: 600px; margin: auto; background-color: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 25px;\">\n    <h2 style=\"text-align: center; color: #2563eb;\">Hey ${name}, here's your weekly progress check-in 🚀</h2>\n\n    <h3 style=\"color: #1e3a8a; margin-top: 25px;\">🔹 Codeforces</h3>\n    <p style=\"white-space: pre-line; line-height: 1.6;\">${cf}</p>\n\n    <h3 style=\"color: #1e3a8a; margin-top: 25px;\">🔹 LeetCode</h3>\n    <p style=\"white-space: pre-line; line-height: 1.6;\">${lc}</p>\n\n    <hr style=\"border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;\">\n\n    <p style=\"font-size: 15px; line-height: 1.6; color: #374151;\">\n      Keep going — small, consistent effort compounds into long-term growth 🌱⚡\n    </p>\n\n    <p style=\"text-align: center; color: #6b7280; font-size: 13px; margin-top: 20px;\">\n      ✨ Generated automatically by your weekly progress tracker ✨\n    </p>\n  </div>\n</div>\n`;\n\nreturn [\n  {\n    json: {\n      email,\n      emailBody\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        992,
+        -192
+      ],
+      "id": "d518f87c-7822-4539-95b8-1d4a25509430",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        816,
+        -208
+      ],
+      "id": "f5fb7a02-57e1-460a-ab43-036a3746cef1",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "Weekly checkin",
+        "message": "={{ $json.emailBody }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1200,
+        -192
+      ],
+      "id": "2278ab56-5d05-42c9-bd41-63d5eb2438a1",
+      "name": "Send a message",
+      "webhookId": "78dd48a8-c0bd-4b5a-a288-d3516de71072",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "uY119tUWxPyb7tAp",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "527a9c98-482f-46e7-b2e1-4f07908817b9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d6f6fd01cc63e048ca5bd7a8e0ea57240f35f1b1736f1ef1d302347c1839d1af"
+  },
+  "id": "GLsWy6JVdEAydURX",
+  "tags": []
+}
